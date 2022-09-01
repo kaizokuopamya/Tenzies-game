@@ -33,7 +33,7 @@ main {
 }
 
 .instructions {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-weight: 400;
   margin-top: 0;
   text-align: center;
@@ -58,10 +58,6 @@ main {
   background-color: white;
 }
 
-.die-num {
-  font-size: 2rem;
-}
-
 .roll-dice {
   height: 3.3rem;
   width: 9rem;
@@ -81,4 +77,45 @@ main {
 
 .roll-dice:active {
   box-shadow: inset 5px 5px 10px -3px rgba(0, 0, 0, 0.7);
+}
+
+/* ========= Dot positions =========== */
+.die-face-container {
+  display: grid;
+  gap: 0.2rem;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  place-self: center;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #000;
+  box-shadow: inset -11px -11px 12px -11px rgba(240, 240, 240, 0.9);
+}
+
+.top {
+  grid-row-start: 1;
+}
+
+.center {
+  grid-row-start: 2;
+}
+
+.bottom {
+  grid-row-start: 3;
+}
+
+.left {
+  grid-column-start: 1;
+}
+
+.middle {
+  grid-column-start: 2;
+}
+
+.right {
+  grid-column-end: -1;
 }

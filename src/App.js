@@ -77,7 +77,7 @@ function App() {
         {tenzies ? "New Game" : "Roll"}
       </button>
       <div className="game-info">
-        <h4>You Rolled {count} times!</h4>
+        <h4>{tenzies ? "You won":`You Rolled ${count} times`}</h4>
       </div>
     </main>
   );
