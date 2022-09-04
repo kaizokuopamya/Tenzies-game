@@ -5,9 +5,23 @@ import { nanoid } from "nanoid";
 import Confetti from "react-confetti";
 
 function App() {
+  const [time, setTime] = React.useState(0);
+  const [timerOn, setTimerOn] = React.useState(false);
   const [dice, setDice] = React.useState(allNewDice());
   const [tenzies, setTenzies] = React.useState(false);
   const [count, setCount] = React.useState(0);
+
+  React.useEffect(() => {
+    let interval = null;
+    if (timerOn) {
+      interval = setInterval(() => {
+        setTime((prevTime) => prevTime + 1000);
+      }, 1000);
+    } else {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [timerOn]);
 
   React.useEffect(() => {
     const allHeld = dice.every((die) => die.isHeld === true);
@@ -15,8 +29,10 @@ function App() {
     const allSameValue = dice.every((die) => die.value === firstValue);
     if (allHeld && allSameValue) {
       setTenzies(true);
+      setTimerOn(false);
     }
   }, [dice]);
+
   function generateNewDie() {
     return {
       value: Math.ceil(Math.random() * 6),
@@ -34,6 +50,7 @@ function App() {
   }
 
   function rollDice() {
+    setTimerOn(true);
     setCount((prevCount) => prevCount + 1);
     if (!tenzies) {
       setDice((oldDice) =>
@@ -42,6 +59,7 @@ function App() {
         })
       );
     } else {
+      setTimerOn(false);
       setTenzies(false);
       setCount(0);
       setDice(allNewDice());
@@ -49,6 +67,7 @@ function App() {
   }
 
   function holdDice(id) {
+    setTimerOn(true);
     setDice((oldDice) =>
       oldDice.map((die) => {
         return die.id === id ? { ...die, isHeld: !die.isHeld } : die;
@@ -64,6 +83,12 @@ function App() {
       holdDice={() => holdDice(die.id)}
     />
   ));
+  const minutes = ("0" + Math.floor((time / 60000) % 60)).slice(-2);
+  const seconds = ("0" + Math.floor((time / 1000) % 60)).slice(-2);
+
+  localStorage.setItem("bestTime", `${minutes}:${seconds}`);
+  localStorage.setItem("count", count);
+
   return (
     <main>
       {tenzies && <Confetti />}
@@ -77,7 +102,8 @@ function App() {
         {tenzies ? "New Game" : "Roll"}
       </button>
       <div className="game-info">
-        <h4>{tenzies ? "You won":`You Rolled ${count} times`}</h4>
+        <h4>{timerOn ? `Time: ${minutes}:${seconds}` : `Best Time: ${localStorage.getItem("bestTime")}`}</h4>
+        <h4>{tenzies ? `Best Roll count: ${Math.min(localStorage.getItem("count"))}`: `You Rolled ${count} times`}</h4>
       </div>
     </main>
   );

@@ -33,6 +33,7 @@ main {
 }
 
 .instructions {
+  width: 80%;
   font-family: "Inter", sans-serif;
   font-weight: 400;
   margin-top: 0;
@@ -69,6 +70,12 @@ main {
   background: #5035ff;
   box-shadow: 0px 3.2px 7.68px rgba(0, 0, 0, 0.18);
   border-radius: 6px;
+}
+
+.game-info{
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
 }
 
 .roll-dice:focus {
